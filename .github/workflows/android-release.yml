@@ -1,6 +1,8 @@
 name: APM Automatic Release
 on:
   push:
+    branches:
+      - master
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
@@ -56,13 +58,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'yarn'
-
-      - name: 'Create env file'
-        run: |
-          echo "${{ secrets.ENV_FILE }}" > .env
-          echo "${{ secrets.SENTRY_PROPERTIES }}" > ./android/sentry.properties
+          node-version: "22"
+          cache: "yarn"
 
       - name: alias yarn.cmd to yarn
         run: alias yarn.cmd="yarn"
@@ -80,21 +77,12 @@ jobs:
       - name: Add Build Sign Keys
         run: |
           git submodule update --init --recursive
-          echo "${{ secrets.RELEASE_SIGN_PWD }}" >> ./android/gradle.properties
 
       - name: commit
         run: |
           git config --global user.email 106490582+lovegaoshi@users.noreply.github.com
           git config --global user.name lovegaoshi
           git commit -m "build: release version bump" -a
-
-      - name: Build Sign jks
-        id: write_file
-        uses: timheuer/base64-to-file@v1.2
-        with:
-          fileName: 'noxupload.jks'
-          fileDir: './android/app'
-          encodedString: ${{ secrets.SIGNED_KEY_BASE64 }}
 
       - name: Install dependencies
         run: yarn install; yarn build
