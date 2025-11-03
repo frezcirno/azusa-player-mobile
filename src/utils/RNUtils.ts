@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import RNFetchBlob from 'react-native-blob-util';
 import * as DocumentPicker from 'expo-document-picker';
-import { nativeCrash } from '@sentry/react-native';
 
 import NativeNoxModule from '@specs/NativeNoxModule';
 
@@ -125,5 +124,5 @@ export const validateFile = async (fpath?: string | null) => {
 };
 
 export const selfDestruct = () => {
-  return isAndroid ? NativeNoxModule?.selfDestruct() : nativeCrash();
+  return isAndroid ? NativeNoxModule?.selfDestruct() : undefined;
 };
