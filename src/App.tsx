@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { Linking, View, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useStore } from 'zustand';
-import * as Sentry from '@sentry/react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import {
   DarkTheme as NavigationDarkTheme,
@@ -16,9 +15,6 @@ import { useIsLandscape } from './hooks/useOrientation';
 import appStore from '@stores/appStore';
 import MainBackground from './components/background/MainBackground';
 import useTheme from './hooks/useTheme';
-// eslint-disable-next-line import/no-unresolved
-import { TRACKING } from '@env';
-import { useSetupVIP } from './hooks/useVIP';
 import SongMenuSheet from '@components/songmenu/SongMenuSheet';
 import { useNoxSetting } from '@stores/useApp';
 import SnackBar from './components/commonui/Snackbar';
@@ -29,24 +25,6 @@ import {
 } from './components/styles/Theme';
 import APMContext from './contexts/APMContext';
 import HookEmptyComponent from './HookEmptyComponent';
-
-if (TRACKING) {
-  Sentry.init({
-    dsn: 'https://2662633cce5b4b9f99da6b395b0a471f@o4505087864799232.ingest.us.sentry.io/4505087866044416',
-    tracesSampleRate: 0,
-    ignoreErrors: [
-      'Network request failed',
-      'Download interrupted.',
-      /Failed to delete /,
-      'Cannot convert undefined value to object',
-      'no audio url',
-      'com.google.android.play.core.appupdate.internal.zzy',
-      'TEST - Sentry Client Crash',
-      // its ok to not track muse error i think
-      /MuseError/,
-    ],
-  });
-}
 
 const useSplash = (duration = 1000) => {
   const [isReady, setIsReady] = React.useState(false);
@@ -60,7 +38,7 @@ const useSplash = (duration = 1000) => {
 };
 
 export default function App(appProps: NoxComponent.AppProps) {
-  const { vip } = useSetupVIP();
+  const vip = true;
   const isSplashReady = useSplash(
     __DEV__ || appProps.intentData || vip ? 1 : 2500,
   );

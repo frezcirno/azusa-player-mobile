@@ -4,10 +4,10 @@ description: build for android APK
 inputs:
   signpwd:
     description: 'release sign pwd in gradle.properties'
-    required: true
+    required: false
   signkey:
     description: 'signed key in base64'
-    required: true
+    required: false
   buildtype:
     description: 'build type (APK/AAB)'
     default: 'assembleRelease'
@@ -19,7 +19,10 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    # When no signing secret is provided (e.g. forks), these steps are skipped
+    # and gradle's release config falls back to the bundled debug.keystore.
     - name: Add Build Sign Keys
+      if: ${{ inputs.signpwd != '' }}
       env:
         RELEASE_SIGN_PWD: ${{ inputs.signpwd }}
       run: |
@@ -28,6 +31,7 @@ runs:
 
     - name: Build Sign jks
       id: write_file
+      if: ${{ inputs.signkey != '' }}
       uses: timheuer/base64-to-file@v2
       with:
         fileName: 'noxupload.jks'

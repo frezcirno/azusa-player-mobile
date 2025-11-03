@@ -15,7 +15,7 @@ import useSync from './sync/useSync';
 
 const EXPORT_OPTIONS_LIST = [
   // T
-  // SyncOptions.LOCAL,
+  SyncOptions.LOCAL,
   SyncOptions.DROPBOX,
   SyncOptions.PERSONAL,
   SyncOptions.GITEE,

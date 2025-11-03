@@ -46,12 +46,9 @@ runs:
       env:
         ENV_FILE: ${{ inputs.env }}
         ENV_LOCAL: ${{ inputs.env_local }}
-        SENTRY_PROPERTIES: ${{ inputs.sentry }}
       run: |
         echo "$ENV_FILE" > .env
         echo "$ENV_LOCAL" > .env.local
-        echo "$SENTRY_PROPERTIES" > ./android/sentry.properties
-        echo "$SENTRY_PROPERTIES" > ./ios/sentry.properties
       shell: bash
 
     - name: alias yarn.cmd to yarn

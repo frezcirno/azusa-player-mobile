@@ -1,8 +1,10 @@
 name: APM Automatic Release
 on:
   push:
+    branches:
+      - master
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - "v[0-9]+.[0-9]+.[0-9]+"
   workflow_dispatch:
 jobs:
   buildAPK:
@@ -29,7 +31,6 @@ jobs:
         with:
           env: ${{ secrets.ENV_FILE }}
           env_local: ${{ secrets.ENV_LOCAL_FILE }}
-          sentry: ${{ secrets.SENTRY_PROPERTIES }}
 
       - name: commit
         run: |
@@ -46,8 +47,8 @@ jobs:
       - name: Release APK
         uses: softprops/action-gh-release@v2
         with:
-          name: 'Release ${{env.COMMIT_TAG}}'
-          tag_name: '${{env.COMMIT_TAG}}'
+          name: "Release ${{env.COMMIT_TAG}}"
+          tag_name: "${{env.COMMIT_TAG}}"
           files: android/app/build/outputs/apk/release/*.apk
           generate_release_notes: true
 
@@ -77,7 +78,7 @@ jobs:
           env_local: ${{ secrets.ENV_LOCAL_FILE }}
           sentry: ${{ secrets.SENTRY_PROPERTIES }}
 
-      - name: 'Create env file'
+      - name: "Create env file"
         run: |
           echo "APPSTORE=true" >> .env
 
@@ -132,7 +133,7 @@ jobs:
           env_local: ${{ secrets.ENV_LOCAL_FILE }}
           sentry: ${{ secrets.SENTRY_PROPERTIES }}
 
-      - name: 'Create env file'
+      - name: "Create env file"
         run: |
           echo "APPSTORE=true" >> .env
 
@@ -142,7 +143,7 @@ jobs:
       - name: Release IPA
         uses: softprops/action-gh-release@v2
         with:
-          name: 'Release ${{env.COMMIT_TAG}}'
-          tag_name: '${{env.COMMIT_TAG}}'
+          name: "Release ${{env.COMMIT_TAG}}"
+          tag_name: "${{env.COMMIT_TAG}}"
           files: ios/build/APM.ipa
           generate_release_notes: true
