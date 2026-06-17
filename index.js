@@ -1,5 +1,10 @@
 // import './wdyr'; // <--- first import
 import 'react-native-get-random-values';
+// installs global ReadableStream/WritableStream/TransformStream. Hermes does
+// not provide these, and the bili/ytb url resolvers rely on them via fetch.
+// web-streams-polyfill v4's bare import is a ponyfill only, so import the
+// dedicated polyfill entry to install the globals.
+import 'web-streams-polyfill/polyfill';
 import { AppRegistry } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import 'react-native-gesture-handler';
